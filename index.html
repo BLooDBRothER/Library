@@ -1,14 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css" />
     <title>My Library</title>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        
+      <img class="logo" src="./assets/book.svg" alt="Book Logo" />
+      <h1>My Library - Store Your Collections</h1>
     </header>
-</body>
+    <main>
+      <section class="book-control">
+        <div class="add-data-cnt">
+          <svg
+            class="control-ic"
+            data-icon="books"
+            viewBox="0 0 69 77"
+            width="40px"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M11.7955 61.25H68.625V8.16666C68.625 3.98445 65.2239 0.583328 61.0417 0.583328H11.75C7.17725 0.583328 0.375 3.61287 0.375 11.9583V65.0417C0.375 73.3871 7.17725 76.4167 11.75 76.4167H68.625V68.8333H11.7955C10.0438 68.7878 7.95833 68.0977 7.95833 65.0417C7.95833 61.9856 10.0438 61.2955 11.7955 61.25ZM19.3333 27.125H30.7083V15.75H38.2917V27.125H49.6667V34.7083H38.2917V46.0833H30.7083V34.7083H19.3333V27.125Z"
+            />
+          </svg>
+          <svg
+            class="control-ic none"
+            data-icon="collections"
+            xmlns="http://www.w3.org/2000/svg"
+            height="48px"
+            viewBox="0 0 24 24"
+            width="48px"
+          >
+            <path d="M0 0h24v24H0V0z" fill="none" />
+            <path
+              d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12zm-7-2h2v-3h3V9h-3V6h-2v3h-3v2h3z"
+            />
+          </svg>
+        </div>
+        <div class="secondary-cnt">
+          <input type="text" placeholder="Search Books" />
+          <svg
+            class="control-ic"
+            xmlns="http://www.w3.org/2000/svg"
+            height="48px"
+            viewBox="0 0 24 24"
+            width="48px"
+            fill="#000000"
+          >
+            <path d="M0 0h24v24H0V0z" fill="none" />
+            <path
+              d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-3 2v5l-1-.75L15 9V4h2zm3 12H8V4h5v9l3-2.25L19 13V4h1v12z"
+            />
+          </svg>
+          <svg
+            class="control-ic"
+            aria-hidden="true"
+            focusable="false"
+            data-icon="filter"
+            role="img"
+            width="40px"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 512 512"
+          >
+            <path
+              d="M487.976 0H24.028C2.71 0-8.047 25.866 7.058 40.971L192 225.941V432c0 7.831 3.821 15.17 10.237 19.662l80 55.98C298.02 518.69 320 507.493 320 487.98V225.941l184.947-184.97C520.021 25.896 509.338 0 487.976 0z"
+            ></path>
+          </svg>
+        </div>
+      </section>
+      <div class="display-book">
+          <h1 class="section-title">All Books</h1>
+          <div class="book-cards">
+              <div class="book-card">
+                  <div class="book-title-cnt">
+                      <span>&ldquo;</span>
+                      <h2 class="book-title">Harry potter</h1>
+                      <span>&rdquo;</span>
+                  </div>
+                  <h3>-J.K.Rowling</h2>
+                  <h3>596 | 1000</h4>
+                  <div class="isread" data-value=false></div>
+              </div>
+              <div class="book-card">
+                  <div class="book-title-cnt">
+                      <span>&ldquo;</span>
+                      <h2 class="book-title">Harry potter</h1>
+                      <span>&rdquo;</span>
+                  </div>
+                  <h3>-J.K.Rowling</h2>
+                  <h3>596 | 1000</h4>
+                  <div class="isread" data-value=false></div>
+              </div>
+              <div class="book-card">
+                  <div class="book-title-cnt">
+                      <span>&ldquo;</span>
+                      <h2 class="book-title">Harry potter</h1>
+                      <span>&rdquo;</span>
+                  </div>
+                  <h3>-J.K.Rowling</h2>
+                  <h3>596 | 1000</h4>
+                  <div class="isread" data-value=false></div>
+              </div>
+              <div class="book-card">
+                  <div class="book-title-cnt">
+                      <span>&ldquo;</span>
+                      <h2 class="book-title">Harry potter</h1>
+                      <span>&rdquo;</span>
+                  </div>
+                  <h3>-J.K.Rowling</h2>
+                  <h3>596 | 1000</h4>
+                  <div class="isread" data-value=false></div>
+              </div>
+              <div class="book-card">
+                  <div class="book-title-cnt">
+                      <span>&ldquo;</span>
+                      <h2 class="book-title">Harry potter</h1>
+                      <span>&rdquo;</span>
+                  </div>
+                  <h3>-J.K.Rowling</h2>
+                  <h3>596 | 1000</h4>
+                  <div class="isread" data-value=false></div>
+              </div>
+              <div class="book-card">
+                  <div class="book-title-cnt">
+                      <span>&ldquo;</span>
+                      <h2 class="book-title">Harry potter</h1>
+                      <span>&rdquo;</span>
+                  </div>
+                  <h3>-J.K.Rowling</h2>
+                  <h3>596 | 1000</h4>
+                  <div class="isread" data-value=false></div>
+              </div>
+              <div class="book-card">
+                  <div class="book-title-cnt">
+                      <span>&ldquo;</span>
+                      <h2 class="book-title">Harry potter</h1>
+                      <span>&rdquo;</span>
+                  </div>
+                  <h3>-J.K.Rowling</h2>
+                  <h3>596 | 1000</h4>
+                  <div class="isread" data-value=false></div>
+              </div>
+              <div class="book-card">
+                  <div class="book-title-cnt">
+                      <span>&ldquo;</span>
+                      <h2 class="book-title">Harry potter</h1>
+                      <span>&rdquo;</span>
+                  </div>
+                  <h3>-J.K.Rowling</h2>
+                  <h3>596 | 1000</h4>
+                  <div class="isread" data-value=false></div>
+              </div>
+              <div class="book-card">
+                  <div class="book-title-cnt">
+                      <span>&ldquo;</span>
+                      <h2 class="book-title">Harry potter</h1>
+                      <span>&rdquo;</span>
+                  </div>
+                  <h3>-J.K.Rowling</h2>
+                  <h3>596 | 1000</h4>
+                  <div class="isread" data-value=false></div>
+              </div>
+              <div class="book-card">
+                  <div class="book-title-cnt">
+                      <span>&ldquo;</span>
+                      <h2 class="book-title">Harry potter</h1>
+                      <span>&rdquo;</span>
+                  </div>
+                  <h3>-J.K.Rowling</h2>
+                  <h3>596 | 1000</h4>
+                  <div class="isread" data-value=false></div>
+              </div>
+              <div class="book-card">
+                  <div class="book-title-cnt">
+                      <span>&ldquo;</span>
+                      <h2 class="book-title">Harry potter</h1>
+                      <span>&rdquo;</span>
+                  </div>
+                  <h3>-J.K.Rowling</h2>
+                  <h3>596 | 1000</h4>
+                  <div class="isread" data-value=false></div>
+              </div>
+          </div>
+      </div>
+    </main>
+  </body>
 </html>

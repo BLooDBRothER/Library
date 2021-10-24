@@ -1,0 +1,14 @@
+*, *::after, *::before{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --primary-color: #CCDBDC;
+    --secondary-color: #003249;
+    --accent: #80CED7;
+    --add-book: #007EA7;
+    --positive: yellowgreen;
+    --negative: red;
+}

@@ -41,14 +41,15 @@
           </svg>
         </div>
         <div class="secondary-cnt">
-          <input type="text" placeholder="Search Books" />
+          <input class="library-search" type="text" placeholder="Search Books" />
           <svg
             class="control-ic"
+            data-icon = "toggle-collections"
+            data-toggled = "false"
             xmlns="http://www.w3.org/2000/svg"
             height="48px"
             viewBox="0 0 24 24"
             width="48px"
-            fill="#000000"
           >
             <path d="M0 0h24v24H0V0z" fill="none" />
             <path
@@ -291,6 +292,16 @@
                   </div>
               </div>
           </div>
+          <div class="book-collections none">
+            <div class="book-collection">
+              <h1 class="collection-title">Comedy</h1>
+              <h3 class="collection-count">Total Books: <span>45</span></h3>
+              <div class="collection-control">
+                <img src="./assets/edit.svg" alt="edit">
+                <img src="./assets/remove.svg" alt="">
+              </div>
+            </div>
+          </div>
       </section>
     </main>
     <div class="add-forms none">
@@ -323,11 +334,10 @@
         </div>
         <div class="book__form-input-cnt book__form-title">
           <div class="form_button">Add To Library</div>
-          <div class="form_button">Add To Collection</div>
         </div>
       </div>
     </div>
 
-    <script src="./js/main.js"></script>
+    <script type="module" src="./js/main.js"></script>
   </body>
 </html>

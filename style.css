@@ -13,10 +13,32 @@
     --negative: red;
 }
 
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+}
+  
+/* Track */
+::-webkit-scrollbar-track {
+    background: var(--accent);
+}
+  
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--form);
+}
+  
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-color);
+}
+
 body{
     background-color: var(--primary-color);
     overflow-x: hidden;
 }
+
+ /* ------------------------------------------------ Navbar ----------------------------------------------------------- */
 
 header{
     display: flex;
@@ -36,6 +58,8 @@ header{
 main{
     padding: 1rem;
 }
+
+ /* ------------------------------------------------ Book control ----------------------------------------------------------- */
 
 .book-control{
     display: flex;
@@ -79,12 +103,15 @@ main{
 
 .control-ic{
     cursor: pointer;
-    fill: #007EA7;
+    fill: var(--form);
+    height: 48px;
 }
 
 .control-ic:hover{
     fill: var(--secondary-color)
 }
+
+ /* ------------------------------------------------ book card ----------------------------------------------------------- */
 
 .section-title{
     text-align: center;
@@ -175,6 +202,58 @@ main{
     font-weight: bold;
     font-size: 1rem;
 }
+
+/* ------------------------------------------------ collection card ----------------------------------------------------------- */
+
+.book-collections{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.book-collection{
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    background-color: var(--secondary-color);
+    color: var(--accent);
+}
+
+.book-collection h3{
+    margin-bottom: 2rem;
+}
+
+.book-collection:hover .collection-control{
+    display: flex;
+}
+
+.collection-control{
+    width: 100%;
+    display: none;
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.collection-control img{
+    transition: transform .2s ease-in;
+}
+
+.collection-control img:hover{
+    transform: scale(1.2);
+    
+}
+
+/* ------------------------------------------------ Add book form ----------------------------------------------------------- */
 
 .book-options-cnt{
     width: 100%;

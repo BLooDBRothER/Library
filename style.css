@@ -260,7 +260,6 @@ main{
 
 .add-form{
     width: 450px;
-    /* height: 700px; */
     padding: 1rem;
     display: flex;
     flex-direction: column;

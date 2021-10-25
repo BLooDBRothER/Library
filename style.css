@@ -9,7 +9,7 @@
     --secondary-color: #003249;
     --accent: #80CED7;
     --add-book: #007EA7;
-    --positive: yellowgreen;
+    --positive: rgb(97, 141, 8);
     --negative: red;
 }
 
@@ -99,17 +99,18 @@ main{
 
 .book-card{
     width: 300px;
+    height: 350px;
     margin: 2rem;
     border-radius: 10px;
     font-size: 1.5rem;
     color: var(--accent);
+    /* overflow: hidden; */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
-    height: 300px;
     background-color: var(--secondary-color);
-
+    position: relative;
 }
 
 .book-title-cnt{
@@ -129,20 +130,122 @@ main{
     text-overflow: ellipsis;
 }
 
+.book-pages{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.book-pages input{
+    background-color: transparent;
+    outline: none;
+    border: none;
+    color: var(--accent);
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 1px solid white;
+}
+
 .isread{
     padding: .5rem;
     font-size: 1rem;
     color: black;
+    cursor: pointer;
+    margin-bottom: 1rem;
 }
 
 .isread[data-value="false"]{
     background-color: var(--negative);
 }
 
+.isread[data-value="true"]{
+    background-color: var(--positive);
+}
+
 .isread[data-value="false"]::after{
     content: "Yet to Complete";
     font-weight: bold;
     font-size: 1rem;
+}
+
+.isread[data-value="true"]::after{
+    content: "\1F44F Completed";
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.book-options-cnt{
+    width: 100%;
+    display: none;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.book-card:hover .book-options-cnt{
+    display: flex;
+}
+
+.book-options-ic{
+    cursor: pointer;
+    position: relative;
+    transition: transform .2s ease-in-out;
+}
+
+.book-card:hover .book-options-ic:first-child{
+    animation: left-in .4s ease;
+}
+
+.book-options-ic:first-child{
+    right: 0;
+}
+
+.book-card:hover .book-options-ic:nth-child(2){
+    animation: fade-in 1s ease;
+}
+
+.book-card:hover .book-options-ic:last-child{
+    animation: right-in .4s ease;
+}
+
+.book-options-ic:last-child{
+    left: 0;
+}
+
+@keyframes left-in {
+    0%{
+        right: 100%;
+    }
+    100%{
+        right: 0;
+    }
+}
+@keyframes fade-in {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+@keyframes right-in {
+    0%{
+        left: 100%;
+    }
+    100%{
+        left: 0;
+    }
+}
+
+/* .book-options-ic:first-child{
+    left: -100%;
+} */
+
+.book-options-ic:hover{
+    transform: scale(1.2);
 }
 
 .none{

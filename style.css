@@ -403,6 +403,19 @@ main{
     transform: translateY(-30px) scale(0.8);
 }
 
+.book__form-input-cnt .book__form-text:read-only + .label-input{
+    transform: translateY(0) scale(1) !important;
+}
+
+.err{
+    position: absolute;
+    top: 110%;
+    left: 10%;
+    font-weight: bold;
+    color: white;
+    font-size: 1rem;
+}
+
 .book__page-details{
     display: flex;
     justify-content: space-evenly;

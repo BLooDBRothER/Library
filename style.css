@@ -8,7 +8,7 @@
     --primary-color: #CCDBDC;
     --secondary-color: #003249;
     --accent: #80CED7;
-    --add-book: #007EA7;
+    --form: #007EA7;
     --positive: rgb(97, 141, 8);
     --negative: red;
 }
@@ -47,6 +47,7 @@ main{
     position: sticky;
     top: 0;
     left: 0;
+    z-index: 2;
 }
 
 .secondary-cnt{
@@ -240,12 +241,120 @@ main{
     }
 }
 
-/* .book-options-ic:first-child{
-    left: -100%;
-} */
-
 .book-options-ic:hover{
     transform: scale(1.2);
+}
+
+.add-forms{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-form{
+    width: 450px;
+    height: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--form);
+    color: white;
+    position: relative;
+}
+
+.form-header{
+    margin-top: 1rem;
+}
+
+.form-header h1{
+    text-align: center;
+    color: white;
+}
+
+.close-form{
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
+}
+
+.book__form-input-cnt{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.book__form-input-cnt .book__form-text{
+    font-size: 1.4rem;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid var(--accent);
+    color: white;
+    z-index: 2;
+    width: 90%;
+}
+
+.label-input{
+    transform-origin: 0;
+    font-size: 1.4rem;
+    font-weight: bold;
+    left: 8%;
+    bottom: 10%;
+    position: absolute;
+    transition: transform .4s ease;
+}
+
+.book__form-input-cnt .book__form-text:focus{
+    border-bottom: 2px dashed var(--accent);
+}
+
+.book__form-input-cnt .book__form-text:focus + .label-input, .book__form-input-cnt input:valid + .label-input{
+    transform: translateY(-30px) scale(0.8);
+}
+
+.book__page-details{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.book__page-details .book__form-input-cnt .book__form-text{
+    width: 80%;
+}
+
+.book__page-details .book__form-input-cnt .label-input{
+    font-size: 1.2rem;
+    left: 12%;
+}
+
+label[for="isread"]{
+    font-weight: bold;
+    margin-right: .8rem;
+}
+
+.form_button{
+    padding: .4rem 1rem;
+    margin: 0 1rem 1rem 1rem;
+    background-color: var(--accent);
+    color: var(--secondary-color);
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
+.form_button:hover{
+    background-color: var(--secondary-color);
+    color: var(--accent);
 }
 
 .none{

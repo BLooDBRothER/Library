@@ -71,7 +71,7 @@
           </svg>
         </div>
       </section>
-      <div class="display-book">
+      <section class="display-book">
           <h1 class="section-title">All Books</h1>
           <div class="book-cards">
               <div class="book-card">
@@ -291,7 +291,41 @@
                   </div>
               </div>
           </div>
-      </div>
+      </section>
     </main>
+    <div class="add-forms">
+      <div class="add-form add-book-form">
+        <div class="form-header">
+          <h1 class="form-title">Add Book</h1>
+          <img class="close-form" src="./assets/close.svg" alt="close-form">
+        </div>
+        <div class="book__form-input-cnt book__form-title">
+          <input class="book__form-text" type="text" required>
+          <span class="label-input">Book Title</span>
+        </div>
+        <div class="book__form-input-cnt book__form-title">
+          <input class="book__form-text" type="text" required>
+          <span class="label-input">Book Author</span>
+        </div>
+        <div class="book__page-details">
+          <div class="book__form-input-cnt book__form-title">
+            <input class="book__form-text" type="number" required>
+            <span class="label-input">Pages Completed</span>
+          </div>
+          <div class="book__form-input-cnt book__form-title">
+            <input class="book__form-text" type="number" required>
+            <span class="label-input">Total Pages</span>
+          </div>
+        </div>
+        <div class="book__form-input-cnt book__form-title">
+          <label for="isread">Have you completed Reading?</label>
+          <input class="book__form-checkbox" id="isreade" type="checkbox">
+        </div>
+        <div class="book__form-input-cnt book__form-title">
+          <div class="form_button">Add To Library</div>
+          <div class="form_button">Add To Collection</div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

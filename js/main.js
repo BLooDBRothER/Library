@@ -21,6 +21,7 @@ Library.prototype.addBook = function (book){
 }
 
 Library.prototype.updateBook = function (idx, book){
+    console.log(idx, this.books[idx]);
     this.books[idx] = book;
 }
 
@@ -32,8 +33,10 @@ Library.prototype.returnBook = function (title){
     return this.books.findIndex(book => book.title === title);
 }
 
-Library.prototype.checkBookExists = function (newBook){
-    return this.books.some(book => book.title === newBook.title);
+Library.prototype.checkBookExists = function (newBook, bookIdx){
+    return this.books.some((book, idx) => {
+        return book.title === newBook.title && bookIdx !== idx;
+    });
 }
 
 const myLibrary = new Library();
@@ -100,6 +103,7 @@ completedPages.addEventListener("click", (e) => {
 
 const pagesRE = /[^\d]/gi;
 
+
 completedPages.addEventListener("input", function(e){
     if(this.value.match(pagesRE) || this.value.length > 5){
         console.log(this.value)
@@ -126,11 +130,10 @@ totalPages.addEventListener("input", function(e){
 formBtn.forEach(btn => {
     btn.addEventListener("click", function(e){
         if(this.dataset.value === "book" && this.innerText === "Add To Library"){
-            addBook();
+            addBookOnCick();
         }
         else if(this.dataset.value === "book" && this.innerText === "Update Book"){
-            this.innerText = "Add To Library";
-            updateBook();
+            updateBookOnClick(this);
         }
     });
 });
@@ -157,17 +160,24 @@ function createBook(){
     return new Book(bookTitle, bookAuthor, bookCompletedPages, bookTotalPages, bookIsRead);
 }
 
-function addBook(){
-    if(checkFilled()) return;
+function validateForm(idx = -1){
+    if(checkFilled()) return false;
     const newBook = createBook();
-    if(myLibrary.checkBookExists(newBook)) {
+    if(myLibrary.checkBookExists(newBook, idx)) {
         error[0].innerText = "Book Already exists";
         title.style.borderColor = "var(--negative)";
         setTimeout(() => {error[0].innerText = ""; title.style.borderColor = "var(--accent)"}, 1000);
-        return
+        return false;
     };
+    return newBook;
+}
+
+function addBookOnCick(){
+    const newBook = validateForm();
+    if(!newBook) return;
     myLibrary.addBook(newBook);
     displayBook(newBook);
+    saveData();
     closeFormIC.click();
 }
 
@@ -175,18 +185,33 @@ function updateBookForm(bookTitle){
     const bookFormBtn = document.querySelector(".form_button[data-value='book']");
     bookFormBtn.innerText = "Update Book";
     toggleBookForm();
+    console.log(myLibrary.books);
     const bookIdx = myLibrary.returnBook(bookTitle);
     bookFormBtn.dataset.idx = bookIdx;
     const book = myLibrary.books[bookIdx];
     title.value = book.title;
     author.value = book.author;
     completedPages.value = book.completedPages;
+    completedPages.readOnly = false;
     totalPages.value = book.totalPages;
     isReadCheckBox.checked = book.isRead;
 }
 
-function updateBook(){
-
+function updateBookOnClick(btn){
+    const bookIdx = +btn.dataset.idx;
+    const updatedBook = validateForm(bookIdx);
+    if(!updatedBook) return;
+    const oldBookCard = bookCardsCnt.querySelector(`.book-card[data-title="${myLibrary.books[bookIdx].title}"]`);
+    const newBookCard = bookCardTemplate(updatedBook.title, updatedBook.author, updatedBook.completedPages, updatedBook.totalPages, updatedBook.isRead);
+    bookCardsCnt.replaceChild(newBookCard, oldBookCard);
+    newBookCard.querySelectorAll(".book-options-ic").forEach(option => {
+        option.addEventListener("click", editBook);
+    });
+    myLibrary.updateBook(bookIdx, updatedBook);
+    btn.innerText = "Add To Library";
+    btn.dataset.idx = "null";
+    saveData();
+    closeFormIC.click();
 }
 
 function editBook(e){
@@ -200,31 +225,57 @@ function editBook(e){
     if(e.target.dataset.value === "edit"){
         updateBookForm(bookTitle);
     }
+    else if(e.target.dataset.value === "collections"){}
+    else{
+        e.target.dataset.value = e.target.dataset.value === "false" ? "true" : "false";
+        const oldBookIdx = myLibrary.returnBook(e.target.parentElement.dataset.title);
+        myLibrary.books[oldBookIdx].isRead = e.target.dataset.value === "false" ? false : true;
+        if(myLibrary.books[oldBookIdx].isRead){
+            e.target.parentElement.querySelector(".book-completedPages").value = myLibrary.books[oldBookIdx].totalPages;;
+            myLibrary.books[oldBookIdx].completedPages = myLibrary.books[oldBookIdx].totalPages;
+        }
+        saveData();
+    }
 }
 
 function displayBook(book){
     bookCardsCnt.appendChild(bookCardTemplate(book.title, book.author, book.completedPages, book.totalPages, book.isRead));
-    bookCardsCnt.lastChild.querySelectorAll(".book-options-ic").forEach(option => {
-        option.addEventListener("click", editBook);
-    });
+    addBookCardListener(bookCardsCnt.lastChild);
 }
 
 function displayAllBooks(books){
+    console.log(books)
     books.forEach(book => {
-        this.displayBook(book);
+        myLibrary.addBook(book);
+        displayBook(book);
     });
 }
 
-//window listener
-window.addEventListener("keyup", (e) => {
-    if(e.key === "Escape" && !formCnt.classList.contains("none")){
-        document.querySelector("body").style.overflowY = "initial"
-        toggleDisplay([formCnt, addBookForm], [0, 0]);
-    }
-});
+function addBookCardListener(elem){
+    const bookCardCompletedPagesInput = elem.querySelector(".book-completedPages");
+    elem.querySelectorAll(".book-options-ic").forEach(option => {
+        option.addEventListener("click", editBook);
+    });
+    bookCardCompletedPagesInput.addEventListener("input", function(e){
+        if(this.value.match(pagesRE) || this.value.length > 5){
+            console.log(this.value)
+            this.value = this.value.slice(0, this.value.length-1);
+            return;
+        }
+        if(+this.value > +this.dataset.pages){
+            error[1].innerText = "Cannot Exceed Total Pages";
+            setTimeout(() => {error[1].innerText = ""}, 1000);
+            this.value = this.value.slice(0, this.value.length-1);
+        }
+        const bookIdx = myLibrary.returnBook(e.target.parentElement.parentElement.dataset.title);
+        console.log(bookIdx)
+        myLibrary.books[+bookIdx].completedPages = +this.value;
+        saveData();
+    });
+    
+}
 
-// util function
-
+// -------------------------------------------------Util function-------------------------------------------
 // function to toggle display none
 function toggleDisplay([...elem], [...value]){
     elem.forEach((each, idx) => {
@@ -238,3 +289,24 @@ function replaceAngularBracket(string = ""){
     string = string.replace(/>/gi, "&gt;");
     return string;
 }
+
+// toSave locallay
+function saveData(){
+    localStorage.setItem("books", JSON.stringify(myLibrary.books));
+}
+
+//window listener
+window.addEventListener("keyup", (e) => {
+    if(e.key === "Escape" && !formCnt.classList.contains("none")){
+        document.querySelector("body").style.overflowY = "initial"
+        toggleDisplay([formCnt, addBookForm], [0, 0]);
+    }
+});
+
+window.addEventListener("DOMContentLoaded", (e)=> {
+    let books = localStorage.getItem("books");
+    if(books){
+        books = JSON.parse(books);
+        displayAllBooks(books);
+    }
+});

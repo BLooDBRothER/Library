@@ -44,7 +44,7 @@ header{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: clamp(50px, 10vw, 100px);
+    height: 100px;
     background-color: var(--secondary-color);
     color: var(--primary-color);
     font-size: clamp(0.7rem, 2vw, 1.5rem);
@@ -132,7 +132,6 @@ main{
     border-radius: 10px;
     font-size: 1.5rem;
     color: var(--accent);
-    /* overflow: hidden; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -150,7 +149,7 @@ main{
     font-weight: bold;
 }
 
-.book-title{
+.book-title, .book-author{
     max-width: 240px;
     text-align: center;
     overflow: hidden;
@@ -175,11 +174,17 @@ main{
     border-bottom: 1px solid white;
 }
 
+.book-completedPages{
+    width: 100px;
+}
+
 .isread{
     padding: .5rem;
     font-size: 1rem;
     color: black;
     cursor: pointer;
+    height: 20px;
+    box-sizing: unset;
     margin-bottom: 1rem;
 }
 
@@ -297,7 +302,7 @@ main{
 
 @keyframes left-in {
     0%{
-        right: 100%;
+        right: 20%;
     }
     100%{
         right: 0;
@@ -313,7 +318,7 @@ main{
 }
 @keyframes right-in {
     0%{
-        left: 100%;
+        left: 20%;
     }
     100%{
         left: 0;
@@ -429,6 +434,10 @@ main{
 .book__page-details .book__form-input-cnt .label-input{
     font-size: 1.2rem;
     left: 12%;
+}
+
+.book__form-text[data-name="compPage"] + .label-input, .book__form-text[data-name="totPage"] + .label-input{
+    font-size: clamp(.8rem, 3vw, 1.2rem);
 }
 
 label[for="isread"]{

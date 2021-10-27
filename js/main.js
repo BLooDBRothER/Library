@@ -53,6 +53,7 @@ const formCnt = document.querySelector(".add-forms");
 const addBookForm = document.querySelector(".add-book-form");
 const closeFormIC = document.querySelector(".close-form");
 const formBtn = document.querySelectorAll(".form_button");
+const addBookBtn = document.querySelector(".form_button[data-value='book']");
 
 // add book form value
 const title = addBookForm.querySelector(".book__form-text[data-name='title']");
@@ -92,10 +93,12 @@ addBookIC.addEventListener("click", toggleBookForm);
 closeFormIC.addEventListener("click", (e) => {
     document.querySelector("body").style.overflowY = "initial"
     toggleDisplay([formCnt, addBookForm], [0, 0]);
+    addBookBtn.innerText = "Add To Library";
 });
 
 completedPages.addEventListener("click", (e) => {
     if(e.target.readOnly){
+        e.preventDefault();
         error[1].innerText = "Fill Total Pages";
         setTimeout(() => {error[1].innerText = ""}, 1000);
     }
@@ -300,6 +303,7 @@ window.addEventListener("keyup", (e) => {
     if(e.key === "Escape" && !formCnt.classList.contains("none")){
         document.querySelector("body").style.overflowY = "initial"
         toggleDisplay([formCnt, addBookForm], [0, 0]);
+        addBookBtn.innerText = "Add To Library";
     }
 });
 

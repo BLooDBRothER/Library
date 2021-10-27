@@ -400,7 +400,7 @@ main{
     transition: transform .4s ease;
 }
 
-.book__form-input-cnt .book__form-text:focus{
+.book__form-input-cnt .book__form-text:focus:not([readonly]){
     border-bottom: 2px dashed var(--accent);
 }
 

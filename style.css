@@ -221,6 +221,7 @@ main{
 .book-collection{
     width: 200px;
     height: 200px;
+    margin: 1rem;
     border-radius: 10px;
     display: flex;
     flex-direction: column;

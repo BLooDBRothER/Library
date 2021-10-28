@@ -1,4 +1,8 @@
-import { bookCardTemplate, genreCardTemplate } from "./template.js";
+import {
+  availableCollectionTemplate,
+  bookCardTemplate,
+  genreCardTemplate,
+} from "./template.js";
 
 // Library Object Prototype Logic
 
@@ -313,7 +317,12 @@ function displayData(data, cntName) {
         )
       ),
       addBookCardListener(bookCardsCnt.lastChild))
-    : bookCollectionsCnt.appendChild(genreCardTemplate(Object.keys(data)[0], Object.values(data)[0]));
+    : (bookCollectionsCnt.appendChild(
+        genreCardTemplate(Object.keys(data)[0], Object.values(data)[0])
+      ),
+      collectionListsCnt.appendChild(
+        availableCollectionTemplate(Object.keys(data)[0])
+      ));
 }
 
 function displayAllData(data, cntName) {
@@ -361,25 +370,26 @@ function addBookCardListener(elem) {
 // DOM
 const closeCollectionCnt = document.querySelector(".display-collection-lists");
 const closeCollectionIC = document.querySelector(".close-collection-ic");
+const collectionListsCnt = document.querySelector(".collection-lists");
 const createCollectionInput = document.querySelector(".collection-name");
 const createCollectionIc = document.querySelector(".create-collection-ic");
 
 createCollectionIc.addEventListener("click", (e) => {
-    const collectionName = createCollectionInput.value;
-    const collection = returnCollection(collectionName);
-    myLibrary.addCollections(collection);
-    displayData(collection);
-    saveData();
+  const collectionName = createCollectionInput.value;
+  const collection = returnCollection(collectionName);
+  myLibrary.addCollections(collection);
+  displayData(collection);
+  saveData();
 });
 
 closeCollectionIC.addEventListener("click", (e) => {
   toggleDisplay([closeCollectionCnt], [0]);
 });
 
-function returnCollection(name){
-    const obj = {};
-    obj[name] = 0;
-    return obj;
+function returnCollection(name) {
+  const obj = {};
+  obj[name] = 0;
+  return obj;
 }
 
 // -------------------------------------------------Util function-------------------------------------------

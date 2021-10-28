@@ -40,6 +40,7 @@ Library.prototype.checkBookExists = function (newBook, bookIdx){
 }
 
 const myLibrary = new Library();
+// --------------------------------------------Book methods----------------------------------------------
 // DOM
 console.log(myLibrary)
 const addBookIC = document.querySelector(".control-ic[data-icon='books']");
@@ -277,6 +278,11 @@ function addBookCardListener(elem){
     });
     
 }
+
+// --------------------------------------------Groups methods----------------------------------------------
+// DOM
+// function toggleCreateCollection(){}
+// addCollectionIC.addEventListener("click", (e) => {});
 
 // -------------------------------------------------Util function-------------------------------------------
 // function to toggle display none

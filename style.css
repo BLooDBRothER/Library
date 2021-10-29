@@ -260,6 +260,15 @@ main{
     
 }
 
+.back-collection{
+    margin-top: .5ren;
+    transition: transform .2s ease;
+}
+
+.back-collection:hover{
+    transform: scale(1.2);
+}
+
 /* ------------------------------------------------ Add book form ----------------------------------------------------------- */
 
 .book-options-cnt{

@@ -1,7 +1,10 @@
-export const bookCardTemplate = (title, author, completedPages, totalPages, isRead) => {
+export const bookCardTemplate = (title, author, completedPages, totalPages, isRead, groups) => {
     const wrapper = document.createElement("div");
     wrapper.classList.add("book-card");
     wrapper.dataset.title = title;
+    groups.forEach(element => {
+      wrapper.dataset[element] = "true";
+    });
     wrapper.innerHTML = `<div class="book-title-cnt">
                             <span>&ldquo;</span>
                             <h2 class="book-title">${title}</h1>
@@ -41,7 +44,6 @@ export const genreCardTemplate = (name, count) => {
    wrapper.innerHTML = `<h1 class="collection-title">${name}</h1>
                         <h3 class="collection-count">Total Books: <span>${count}</span></h3>
                         <div class="collection-control">
-                           <img src="./assets/edit.svg" alt="edit">
                            <img src="./assets/remove.svg" alt="">
                         </div>`
    return wrapper;

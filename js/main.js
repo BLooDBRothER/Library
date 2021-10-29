@@ -348,7 +348,8 @@ function displayData(data, cntName) {
           data.author,
           data.completedPages,
           data.totalPages,
-          data.isRead
+          data.isRead,
+          data.groups
         )
       ),
       addBookCardListener(bookCardsCnt.lastChild))
@@ -358,7 +359,7 @@ function displayData(data, cntName) {
       collectionListsCnt.appendChild(
         availableCollectionTemplate(Object.keys(data)[0])
       ),
-      // addCollectionCardListener(bookCollectionsCnt.lastChild),
+      addCollectionCardListener(bookCollectionsCnt.lastChild),
       addCollectionListListener(collectionListsCnt.lastChild));
 }
 
@@ -467,9 +468,36 @@ function addCollectionListListener(elem) {
   });
 }
 
+function addCollectionCardListener(elem){
+  elem.addEventListener("click", function (e) {
+    closeCollectionCnt.classList.add("none");
+    toggleDisplay(
+      [bookCardsCnt, bookCollectionsCnt],
+      [1, 0]
+    );
+    displayCollectionBook(this.dataset.name);
+  });
+}
+
+function displayCollectionBook(genreName){
+  const allBooks = [...document.querySelectorAll(".book-card")];
+  toggleDisplay(allBooks, [0]);
+  console.log(genreName)
+  const genreBook = [...document.querySelectorAll(`.book-card[data-${genreName}="true"]`)];
+  console.log(genreBook);
+  toggleDisplay(genreBook, [1]);
+  console.log(allBooks);
+}
+
 // -------------------------------------------------Util function-------------------------------------------
 // function to toggle display none
 function toggleDisplay([...elem], [...value]) {
+  if(elem.length !== value.length){
+    elem.forEach((each) => {
+      value[0] ? each.classList.remove("none") : each.classList.add("none");
+    });
+    return;
+  }
   elem.forEach((each, idx) => {
     value[idx] ? each.classList.remove("none") : each.classList.add("none");
   });

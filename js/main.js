@@ -145,6 +145,7 @@ toggleCollectionIC.addEventListener("click", function (e) {
       [0, 1, 0, 1]
     );
   } else {
+    backCollectionIC.click();
     this.style.fill = "var(--form)";
     this.dataset.toggled = "false";
     librarySearch.placeholder = "Search Books";
@@ -422,6 +423,12 @@ const closeCollectionIC = document.querySelector(".close-collection-ic");
 const collectionListsCnt = document.querySelector(".collection-lists");
 const createCollectionInput = document.querySelector(".collection-name");
 const createCollectionIc = document.querySelector(".create-collection-ic");
+const backCollectionIC = document.querySelector(".back-collection");
+const collectionListDisp = document.querySelector(".cl-list-cnt");
+
+addCollectionIC.addEventListener("click", (e) => {
+  toggleDisplay([closeCollectionCnt, collectionListDisp], [1, 0]);
+});
 
 createCollectionIc.addEventListener("click", (e) => {
   const collectionName = replaceAngularBracket(createCollectionInput.value);
@@ -443,10 +450,20 @@ createCollectionIc.addEventListener("click", (e) => {
   myLibrary.addCollections(collection);
   displayData(collection);
   saveData();
+  createCollectionInput.value = "";
 });
 
 closeCollectionIC.addEventListener("click", (e) => {
-  toggleDisplay([closeCollectionCnt], [0]);
+  toggleDisplay([closeCollectionCnt, collectionListDisp], [0, 1]);
+});
+
+backCollectionIC.addEventListener("click", (e) => {
+  const allBooks = [...document.querySelectorAll(".book-card")];
+  toggleDisplay(allBooks, [1]);
+  toggleDisplay(
+    [bookCardsCnt, bookCollectionsCnt, backCollectionIC],
+    [0, 1, 0]
+  );
 });
 
 function returnCollection(name) {
@@ -463,27 +480,37 @@ function addCollectionListListener(elem) {
       closeCollectionCnt.dataset.title,
       this.dataset.name
     );
-    this.dataset.checked = this.dataset.checked === "false" ? "true" : "false";
+    this.dataset.checked =
+      this.dataset.checked === "false"
+        ? (document.querySelector(
+            `.book-card[data-title="${closeCollectionCnt.dataset.title}"]`
+          ).dataset[this.dataset.name.toLowerCase().split(" ").join("_")] = "true",
+          "true")
+        : (document.querySelector(
+          `.book-card[data-title="${closeCollectionCnt.dataset.title}"]`
+        ).dataset[this.dataset.name.toLowerCase().split(" ").join("_")] = "false",
+        "false");
     saveData();
   });
 }
 
-function addCollectionCardListener(elem){
+function addCollectionCardListener(elem) {
   elem.addEventListener("click", function (e) {
-    closeCollectionCnt.classList.add("none");
     toggleDisplay(
-      [bookCardsCnt, bookCollectionsCnt],
-      [1, 0]
+      [closeCollectionCnt, bookCardsCnt, bookCollectionsCnt, backCollectionIC],
+      [0, 1, 0, 1]
     );
     displayCollectionBook(this.dataset.name);
   });
 }
 
-function displayCollectionBook(genreName){
+function displayCollectionBook(genreName) {
   const allBooks = [...document.querySelectorAll(".book-card")];
   toggleDisplay(allBooks, [0]);
-  console.log(genreName)
-  const genreBook = [...document.querySelectorAll(`.book-card[data-${genreName}="true"]`)];
+  console.log(genreName);
+  const genreBook = [
+    ...document.querySelectorAll(`.book-card[data-${genreName.toLowerCase().split(" ").join("_")}="true"]`),
+  ];
   console.log(genreBook);
   toggleDisplay(genreBook, [1]);
   console.log(allBooks);
@@ -492,7 +519,7 @@ function displayCollectionBook(genreName){
 // -------------------------------------------------Util function-------------------------------------------
 // function to toggle display none
 function toggleDisplay([...elem], [...value]) {
-  if(elem.length !== value.length){
+  if (elem.length !== value.length) {
     elem.forEach((each) => {
       value[0] ? each.classList.remove("none") : each.classList.add("none");
     });

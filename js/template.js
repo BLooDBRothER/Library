@@ -3,7 +3,7 @@ export const bookCardTemplate = (title, author, completedPages, totalPages, isRe
     wrapper.classList.add("book-card");
     wrapper.dataset.title = title;
     groups.forEach(element => {
-      wrapper.dataset[element] = "true";
+      wrapper.dataset[element.toLowerCase().split(" ").join("_")] = "true";
     });
     wrapper.innerHTML = `<div class="book-title-cnt">
                             <span>&ldquo;</span>

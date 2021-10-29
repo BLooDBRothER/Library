@@ -555,6 +555,14 @@ label[for="isread"]{
     background-color: var(--accent);
 }
 
+.cl-list-cnt{
+    width: 90%;
+}
+
+.cl-list-cnt h1{
+    text-align: center;
+}
+
 .collection-title{
     max-width: 250px;
     overflow: hidden;

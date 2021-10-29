@@ -24,6 +24,7 @@ export const bookCardTemplate = (title, author, completedPages, totalPages, isRe
 export const availableCollectionTemplate = (name) => {
    const wrapper = document.createElement("div");
    wrapper.classList.add("collection-list");
+   wrapper.dataset.name = name;
    wrapper.dataset.checked = "false";
    wrapper.innerHTML = `<div class="checkbox">
                            <div class="checked"></div>
@@ -36,6 +37,7 @@ export const availableCollectionTemplate = (name) => {
 export const genreCardTemplate = (name, count) => {
    const wrapper = document.createElement("div");
    wrapper.classList.add("book-collection");
+   wrapper.dataset.name = name;
    wrapper.innerHTML = `<h1 class="collection-title">${name}</h1>
                         <h3 class="collection-count">Total Books: <span>${count}</span></h3>
                         <div class="collection-control">

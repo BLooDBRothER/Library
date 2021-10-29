@@ -32,7 +32,6 @@ Library.prototype.addBook = function (book) {
 };
 
 Library.prototype.updateBook = function (idx, book) {
-  console.log(idx, this.books[idx]);
   this.books[idx] = book;
 };
 
@@ -46,12 +45,49 @@ Library.prototype.returnBook = function (title) {
 
 Library.prototype.checkBookExists = function (newBook, bookIdx) {
   return this.books.some((book, idx) => {
-    return book.title === newBook.title && bookIdx !== idx;
+    return (
+      book.title.toLowerCase() === newBook.title.toLowerCase() &&
+      bookIdx !== idx
+    );
   });
 };
-
 Library.prototype.addCollections = function (collectionObj) {
   this.libraryGroups.push(collectionObj);
+};
+
+Library.prototype.editCollectionsToBook = function (bookTitle, collectionName) {
+  const bookIdx = this.returnBook(bookTitle);
+  let count;
+  this.books[bookIdx].groups.some((name) => name === collectionName)
+    ? ((this.books[bookIdx].groups = this.books[bookIdx].groups.filter(
+        (name) => name !== collectionName
+      )),
+      (count = this.collectionCount(collectionName, 0)))
+    : (this.books[bookIdx].groups.push(collectionName),
+      (count = this.collectionCount(collectionName, 1)));
+  return count;
+};
+
+Library.prototype.collectionCount = function (collectionName, value) {
+  let count;
+  this.libraryGroups.forEach((group) => {
+    if (group[collectionName] !== undefined) {
+      value ? group[collectionName]++ : group[collectionName]--;
+      count = group[collectionName];
+    }
+  });
+  return count;
+};
+
+Library.prototype.returnBookCollections = function (bookTitle) {
+  const bookIdx = this.returnBook(bookTitle);
+  return this.books[bookIdx].groups;
+};
+
+Library.prototype.checkCollectionExists = function (name) {
+  return this.libraryGroups.some(
+    (collection) => collection[name] !== undefined
+  );
 };
 
 const myLibrary = new Library();
@@ -142,7 +178,6 @@ const pagesRE = /[^\d]/gi;
 
 completedPages.addEventListener("input", function (e) {
   if (this.value.match(pagesRE) || this.value.length > 5) {
-    console.log(this.value);
     this.value = this.value.slice(0, this.value.length - 1);
     return;
   }
@@ -158,7 +193,6 @@ completedPages.addEventListener("input", function (e) {
 totalPages.addEventListener("input", function (e) {
   completedPages.readOnly = this.value !== "" ? false : true;
   if (this.value.match(pagesRE) || this.value.length > 5) {
-    console.log(this.value);
     this.value = this.value.slice(0, this.value.length - 1);
     return;
   }
@@ -236,7 +270,6 @@ function updateBookForm(bookTitle) {
   const bookFormBtn = document.querySelector(".form_button[data-value='book']");
   bookFormBtn.innerText = "Update Book";
   toggleBookForm();
-  console.log(myLibrary.books);
   const bookIdx = myLibrary.returnBook(bookTitle);
   bookFormBtn.dataset.idx = bookIdx;
   const book = myLibrary.books[bookIdx];
@@ -275,10 +308,8 @@ function updateBookOnClick(btn) {
 
 function editBook(e) {
   const bookTitle = e.target.parentElement.dataset.title;
-  console.log(bookTitle);
   if (e.target.dataset.value === "delete") {
     myLibrary.removeBook(bookTitle);
-    console.log(bookCardsCnt);
     bookCardsCnt.removeChild(
       bookCardsCnt.querySelector(`.book-card[data-title="${bookTitle}"]`)
     );
@@ -286,6 +317,10 @@ function editBook(e) {
   if (e.target.dataset.value === "edit") {
     updateBookForm(bookTitle);
   } else if (e.target.dataset.value === "collections") {
+    closeCollectionCnt.dataset.title = e.target.parentElement.dataset.title;
+    enableGroupsPresent(
+      myLibrary.returnBookCollections(closeCollectionCnt.dataset.title)
+    );
     toggleDisplay([closeCollectionCnt], [1]);
   } else {
     e.target.dataset.value =
@@ -322,7 +357,9 @@ function displayData(data, cntName) {
       ),
       collectionListsCnt.appendChild(
         availableCollectionTemplate(Object.keys(data)[0])
-      ));
+      ),
+      // addCollectionCardListener(bookCollectionsCnt.lastChild),
+      addCollectionListListener(collectionListsCnt.lastChild));
 }
 
 function displayAllData(data, cntName) {
@@ -337,6 +374,19 @@ function displayAllData(data, cntName) {
       });
 }
 
+function enableGroupsPresent(groups) {
+  const collectionList = document.querySelectorAll(".collection-list");
+  if (collectionList.length === 0) return;
+  collectionList.forEach((list) => {
+    list.dataset.checked = "false";
+  });
+  groups.forEach((name) => {
+    document.querySelector(
+      `.collection-list[data-name="${name}"]`
+    ).dataset.checked = "true";
+  });
+}
+
 function addBookCardListener(elem) {
   const bookCardCompletedPagesInput = elem.querySelector(
     ".book-completedPages"
@@ -346,7 +396,6 @@ function addBookCardListener(elem) {
   });
   bookCardCompletedPagesInput.addEventListener("input", function (e) {
     if (this.value.match(pagesRE) || this.value.length > 5) {
-      console.log(this.value);
       this.value = this.value.slice(0, this.value.length - 1);
       return;
     }
@@ -360,7 +409,6 @@ function addBookCardListener(elem) {
     const bookIdx = myLibrary.returnBook(
       e.target.parentElement.parentElement.dataset.title
     );
-    console.log(bookIdx);
     myLibrary.books[+bookIdx].completedPages = +this.value;
     saveData();
   });
@@ -375,7 +423,21 @@ const createCollectionInput = document.querySelector(".collection-name");
 const createCollectionIc = document.querySelector(".create-collection-ic");
 
 createCollectionIc.addEventListener("click", (e) => {
-  const collectionName = createCollectionInput.value;
+  const collectionName = replaceAngularBracket(createCollectionInput.value);
+  if (collectionName === "") {
+    document.querySelector(".cl-err").innerText = "Can't be Empty";
+    setTimeout((e) => {
+      document.querySelector(".cl-err").innerText = "";
+    }, 1000);
+    return;
+  }
+  if (myLibrary.checkCollectionExists(collectionName)) {
+    document.querySelector(".cl-err").innerText = "Already Exist";
+    setTimeout((e) => {
+      document.querySelector(".cl-err").innerText = "";
+    }, 1000);
+    return;
+  }
   const collection = returnCollection(collectionName);
   myLibrary.addCollections(collection);
   displayData(collection);
@@ -390,6 +452,19 @@ function returnCollection(name) {
   const obj = {};
   obj[name] = 0;
   return obj;
+}
+
+function addCollectionListListener(elem) {
+  elem.addEventListener("click", function (e) {
+    document.querySelector(
+      `.book-collection[data-name="${this.dataset.name}"] h3 span`
+    ).innerText = myLibrary.editCollectionsToBook(
+      closeCollectionCnt.dataset.title,
+      this.dataset.name
+    );
+    this.dataset.checked = this.dataset.checked === "false" ? "true" : "false";
+    saveData();
+  });
 }
 
 // -------------------------------------------------Util function-------------------------------------------

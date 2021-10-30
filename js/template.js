@@ -1,7 +1,8 @@
 export const bookCardTemplate = (title, author, completedPages, totalPages, isRead, groups) => {
+    const bookTitle = title.toLowerCase().split(" ").join("_");
     const wrapper = document.createElement("div");
     wrapper.classList.add("book-card");
-    wrapper.dataset.title = title;
+    wrapper.dataset.title = bookTitle;
     groups.forEach(element => {
       wrapper.dataset[element.toLowerCase().split(" ").join("_")] = "true";
     });
@@ -16,7 +17,7 @@ export const bookCardTemplate = (title, author, completedPages, totalPages, isRe
                             <h4 class="book-totalPages">&nbsp;| ${totalPages}</h4>
                          </div>
                          <div class="isread book-options-ic" data-value="${isRead}"></div>
-                         <div class="book-options-cnt" data-title="${title}">
+                         <div class="book-options-cnt" data-title="${bookTitle}">
                             <img class="book-options-ic" data-value="delete" src="./assets/remove.svg" alt="remove">
                             <img class="book-options-ic" data-value="edit" src="./assets/edit.svg" alt="edit">
                             <img class="book-options-ic" data-value="collections" src="./assets/library_add.svg" alt="collections">
@@ -25,9 +26,10 @@ export const bookCardTemplate = (title, author, completedPages, totalPages, isRe
 }
 
 export const availableCollectionTemplate = (name) => {
+   const collectionName = name.toLowerCase().split(" ").join("_");
    const wrapper = document.createElement("div");
    wrapper.classList.add("collection-list");
-   wrapper.dataset.name = name;
+   wrapper.dataset.name = collectionName;
    wrapper.dataset.checked = "false";
    wrapper.innerHTML = `<div class="checkbox">
                            <div class="checked"></div>
@@ -38,13 +40,14 @@ export const availableCollectionTemplate = (name) => {
 }
 
 export const genreCardTemplate = (name, count) => {
+   const collectionName = name.toLowerCase().split(" ").join("_");
    const wrapper = document.createElement("div");
    wrapper.classList.add("book-collection");
-   wrapper.dataset.name = name;
+   wrapper.dataset.name = collectionName;
    wrapper.innerHTML = `<h1 class="collection-title">${name}</h1>
                         <h3 class="collection-count">Total Books: <span>${count}</span></h3>
                         <div class="collection-control">
-                           <img src="./assets/remove.svg" alt="">
+                           <img src="./assets/remove.svg" alt="remove genre">
                         </div>`
    return wrapper;
 }

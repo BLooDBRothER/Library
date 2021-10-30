@@ -36,17 +36,17 @@ Library.prototype.updateBook = function (idx, book) {
 };
 
 Library.prototype.removeBook = function (title) {
-  this.books = this.books.filter((book) => book.title !== title);
+  this.books = this.books.filter((book) => replaceSpaceUnderscore(book.title.toLowerCase()) !== title);
 };
 
 Library.prototype.returnBook = function (title) {
-  return this.books.findIndex((book) => book.title === title);
+  return this.books.findIndex((book) => replaceSpaceUnderscore(book.title.toLowerCase())=== title);
 };
 
 Library.prototype.checkBookExists = function (newBook, bookIdx) {
   return this.books.some((book, idx) => {
     return (
-      book.title.toLowerCase() === newBook.title.toLowerCase() &&
+      replaceSpaceUnderscore(book.title.toLowerCase()) === replaceSpaceUnderscore(newBook.title.toLowerCase()) &&
       bookIdx !== idx
     );
   });
@@ -56,6 +56,7 @@ Library.prototype.addCollections = function (collectionObj) {
 };
 
 Library.prototype.editCollectionsToBook = function (bookTitle, collectionName) {
+  console.log(bookTitle, collectionName)
   const bookIdx = this.returnBook(bookTitle);
   let count;
   this.books[bookIdx].groups.some((name) => name === collectionName)
@@ -65,6 +66,7 @@ Library.prototype.editCollectionsToBook = function (bookTitle, collectionName) {
       (count = this.collectionCount(collectionName, 0)))
     : (this.books[bookIdx].groups.push(collectionName),
       (count = this.collectionCount(collectionName, 1)));
+  console.log(this.books);
   return count;
 };
 
@@ -80,13 +82,14 @@ Library.prototype.collectionCount = function (collectionName, value) {
 };
 
 Library.prototype.returnBookCollections = function (bookTitle) {
+  console.log(bookTitle)
   const bookIdx = this.returnBook(bookTitle);
   return this.books[bookIdx].groups;
 };
 
 Library.prototype.checkCollectionExists = function (name) {
   return this.libraryGroups.some(
-    (collection) => collection[name] !== undefined
+    (collection) => collection[name.toLowerCase()] !== undefined
   );
 };
 
@@ -287,14 +290,23 @@ function updateBookOnClick(btn) {
   const updatedBook = validateForm(bookIdx);
   if (!updatedBook) return;
   const oldBookCard = bookCardsCnt.querySelector(
-    `.book-card[data-title="${myLibrary.books[bookIdx].title}"]`
+    `.book-card[data-title="${replaceSpaceUnderscore(myLibrary.books[bookIdx].title.toLowerCase())}"]`
   );
+  console.log(oldBookCard);
+  const groups = oldBookCard ? oldBookCard.dataset : {};
+  for(let i in groups){
+    if(groups[i] === "true"){
+      updatedBook.groups.push(i);
+    }
+  }
+  console.log(updatedBook);
   const newBookCard = bookCardTemplate(
     updatedBook.title,
     updatedBook.author,
     updatedBook.completedPages,
     updatedBook.totalPages,
-    updatedBook.isRead
+    updatedBook.isRead,
+    updatedBook.groups
   );
   bookCardsCnt.replaceChild(newBookCard, oldBookCard);
   newBookCard.querySelectorAll(".book-options-ic").forEach((option) => {
@@ -383,8 +395,9 @@ function enableGroupsPresent(groups) {
     list.dataset.checked = "false";
   });
   groups.forEach((name) => {
+    console.log(name)
     document.querySelector(
-      `.collection-list[data-name="${name}"]`
+      `.collection-list[data-name="${replaceSpaceUnderscore(name.toLowerCase())}"]`
     ).dataset.checked = "true";
   });
 }
@@ -474,21 +487,23 @@ function returnCollection(name) {
 
 function addCollectionListListener(elem) {
   elem.addEventListener("click", function (e) {
+    const collectionName = this.querySelector(".collection-title").innerText;
+    console.log(collectionName)
     document.querySelector(
       `.book-collection[data-name="${this.dataset.name}"] h3 span`
     ).innerText = myLibrary.editCollectionsToBook(
       closeCollectionCnt.dataset.title,
-      this.dataset.name
+      collectionName
     );
     this.dataset.checked =
       this.dataset.checked === "false"
         ? (document.querySelector(
             `.book-card[data-title="${closeCollectionCnt.dataset.title}"]`
-          ).dataset[this.dataset.name.toLowerCase().split(" ").join("_")] = "true",
+          ).dataset[replaceSpaceUnderscore(this.dataset.name.toLowerCase())] = "true",
           "true")
         : (document.querySelector(
           `.book-card[data-title="${closeCollectionCnt.dataset.title}"]`
-        ).dataset[this.dataset.name.toLowerCase().split(" ").join("_")] = "false",
+        ).dataset[replaceSpaceUnderscore(this.dataset.name.toLowerCase())] = "false",
         "false");
     saveData();
   });
@@ -529,6 +544,12 @@ function toggleDisplay([...elem], [...value]) {
     value[idx] ? each.classList.remove("none") : each.classList.add("none");
   });
 }
+
+// function to replace space to underscore and vice versa
+function replaceSpaceUnderscore(str){
+  return str.replace(/[ ]/gi, "_");
+}
+
 
 // function to replace angular brackets
 function replaceAngularBracket(string = "") {

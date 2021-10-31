@@ -81,6 +81,14 @@ Library.prototype.collectionCount = function (collectionName, value) {
   return count;
 };
 
+Library.prototype.removeGnere = function (genreName){
+  this.books.forEach(book => {
+    book.groups = book.groups.filter(group => replaceSpaceUnderscore(group.toLowerCase()) !== genreName);
+  });
+  this.libraryGroups = this.libraryGroups.filter(obj => replaceSpaceUnderscore(Object.keys(obj)[0].toLocaleLowerCase()) !== genreName);
+  console.log(this.books, this.libraryGroups);
+}
+
 Library.prototype.returnBookCollections = function (bookTitle) {
   console.log(bookTitle)
   const bookIdx = this.returnBook(bookTitle);
@@ -373,7 +381,8 @@ function displayData(data, cntName) {
         availableCollectionTemplate(Object.keys(data)[0])
       ),
       addCollectionCardListener(bookCollectionsCnt.lastChild),
-      addCollectionListListener(collectionListsCnt.lastChild));
+      addCollectionListListener(collectionListsCnt.lastChild),
+      addRemoveEventListener([bookCollectionsCnt.lastChild, collectionListsCnt.lastChild]));
 }
 
 function displayAllData(data, cntName) {
@@ -386,6 +395,16 @@ function displayAllData(data, cntName) {
         myLibrary.addCollections(obj);
         displayData(obj, cntName);
       });
+}
+
+function addRemoveEventListener(elem){
+  let removeGenreIC = [...elem[0].querySelectorAll(".remove-genre-ic")];
+  console.log(removeGenreIC);
+  removeGenreIC = [...removeGenreIC,...[...elem[1].querySelectorAll(".remove-genre-ic")]];
+  console.log(removeGenreIC);
+  removeGenreIC.forEach(removeIc => {
+    removeIc.addEventListener("click", removeGenre);
+  });
 }
 
 function enableGroupsPresent(groups) {
@@ -529,6 +548,22 @@ function displayCollectionBook(genreName) {
   console.log(genreBook);
   toggleDisplay(genreBook, [1]);
   console.log(allBooks);
+}
+
+function removeGenre(e){
+  event.stopPropagation();
+  const genreName = this.parentElement.dataset.name;
+  console.log(this.parentElement.dataset.name);
+  const genreCard = document.querySelector(`.book-collection[data-name="${genreName}"]`);
+  const genreList = document.querySelector(`.collection-list[data-name="${genreName}"]`);
+  bookCollectionsCnt.removeChild(genreCard),
+  collectionListsCnt.removeChild(genreList)
+  const allGenreBook = document.querySelectorAll(`.book-card[data-${genreName}="true"]`);
+  allGenreBook.forEach(card => {
+    card.dataset[genreName] = "false";
+  });
+  myLibrary.removeGnere(genreName);
+  saveData();
 }
 
 // -------------------------------------------------Util function-------------------------------------------

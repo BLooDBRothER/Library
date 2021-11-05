@@ -112,7 +112,6 @@ const addCollectionIC = document.querySelector(
 const toggleCollectionIC = document.querySelector(
   ".control-ic[data-icon='toggle-collections']"
 );
-const librarySearch = document.querySelector(".library-search");
 const sectionTitle = document.querySelector(".section-title");
 const bookCardsCnt = document.querySelector(".book-cards");
 const bookCollectionsCnt = document.querySelector(".book-collections");
@@ -148,7 +147,6 @@ function toggleBookForm() {
 toggleCollectionIC.addEventListener("click", function (e) {
   if (this.dataset.toggled === "false") {
     this.style.fill = "var(--secondary-color)";
-    librarySearch.placeholder = "Search Collections";
     this.dataset.toggled = "true";
     sectionTitle.innerText = "Collections";
     toggleDisplay(
@@ -159,7 +157,6 @@ toggleCollectionIC.addEventListener("click", function (e) {
     backCollectionIC.click();
     this.style.fill = "var(--form)";
     this.dataset.toggled = "false";
-    librarySearch.placeholder = "Search Books";
     sectionTitle.innerText = "All Books";
     toggleDisplay(
       [addBookIC, addCollectionIC, bookCardsCnt, bookCollectionsCnt],
@@ -330,25 +327,30 @@ function updateBookOnClick(btn) {
 function editBook(e) {
   const bookTitle = e.target.parentElement.dataset.title;
   if (e.target.dataset.value === "delete") {
+    console.log("hel")
     myLibrary.removeBook(bookTitle);
     bookCardsCnt.removeChild(
       bookCardsCnt.querySelector(`.book-card[data-title="${bookTitle}"]`)
     );
+    saveData();
   }
-  if (e.target.dataset.value === "edit") {
+  else if (e.target.dataset.value === "edit") {
     updateBookForm(bookTitle);
-  } else if (e.target.dataset.value === "collections") {
+  } 
+  else if (e.target.dataset.value === "collections") {
     closeCollectionCnt.dataset.title = e.target.parentElement.dataset.title;
     enableGroupsPresent(
       myLibrary.returnBookCollections(closeCollectionCnt.dataset.title)
     );
     toggleDisplay([closeCollectionCnt], [1]);
-  } else {
+  }
+  else {
     e.target.dataset.value =
       e.target.dataset.value === "false" ? "true" : "false";
     const oldBookIdx = myLibrary.returnBook(
       e.target.parentElement.dataset.title
     );
+    console.log(myLibrary, oldBookIdx)
     myLibrary.books[oldBookIdx].isRead =
       e.target.dataset.value === "false" ? false : true;
     if (myLibrary.books[oldBookIdx].isRead) {
